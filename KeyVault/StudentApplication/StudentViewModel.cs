@@ -52,7 +52,7 @@ namespace StudentApplication
             {
                 return _selectedItem;
             }
-            private set
+            set
             {
                 _selectedItem = value;
 
