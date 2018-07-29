@@ -5,4 +5,4 @@ This repository contains two applications.
 * Second is the client application, made with WPF to manage the Student data. 
 
 ## User Interface
-![Client Application](/ClientUserInterface.png)
+![Client Application](https://github.com/arghya-chowdhury/AzureByWPF/blob/master/KeyVault/ClientUserInterface.png)
