@@ -3,4 +3,4 @@
 Sample code contains all CRUD operations of Blob Management 
 
 ## User Interface
-![Listener & Sender Applications ](https://github.com/arghya-chowdhury/AzureByWPF/blob/master/BlobManagement/ClientInerface.png)
+![Blob Management](https://github.com/arghya-chowdhury/AzureSamples/blob/master//BlobManagement/ClientInterface.png)
