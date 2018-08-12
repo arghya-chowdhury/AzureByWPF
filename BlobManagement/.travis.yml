@@ -1,8 +1,0 @@
-language: csharp
-solution: "./BlobManagement/BlobManagement.sln"
-
-install:
-- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./BlobManagement/BlobManagement.sln
-
-script:
-- xbuild ./BlobManagement/BlobManagement.sln
