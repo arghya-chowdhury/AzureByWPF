@@ -1,4 +1,7 @@
 language: csharp
 solution: BlobManagement.sln
-before_script:
-  - nuget restore BlobManagement.sln
+script:
+msbuild /p:Configuration=Release BlobManagement.sln
+branches:
+except:
+  - gh-pages
