@@ -1,4 +1,4 @@
-# Azure Blob Storage [![Build Status](https://travis-ci.com/arghya-chowdhury/AzureSamples.svg?branch=master)](https://travis-ci.com/arghya-chowdhury/AzureSamples)
+# Azure Blob Storage https://ci.appveyor.com/api/projects/status/4j403jn6g5vpri2a?svg=true
 
 Sample app contains all CRUD operations of Blob Management 
 
