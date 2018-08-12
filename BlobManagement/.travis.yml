@@ -1,5 +1,7 @@
 language: csharp
 solution: BlobManagement.sln
+script:
+msbuild /p:Configuration=Release BlobManagement.sln
 branches:
 except:
   - gh-pages
