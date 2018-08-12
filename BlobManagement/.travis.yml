@@ -1,5 +1,4 @@
 language: csharp
 solution: BlobManagement.sln
-branches:
-except:
-  - gh-pages
+before_script:
+  - nuget restore BlobManagement.sln
