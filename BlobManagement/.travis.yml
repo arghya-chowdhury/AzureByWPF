@@ -1,7 +1,8 @@
+os: windows
 language: csharp
 solution: BlobManagement.sln
 script:
-msbuild /p:Configuration=Release BlobManagement.sln
+- dotnet build
 branches:
 except:
   - gh-pages
