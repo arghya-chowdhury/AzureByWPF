@@ -1,4 +1,4 @@
-# Azure Blob Storage
+# Azure Blob Storage [![Build Status](https://travis-ci.com/arghya-chowdhury/AzureSamples.svg?branch=master)](https://travis-ci.com/arghya-chowdhury/AzureSamples)
 
 Sample code contains all CRUD operations of Blob Management 
 
