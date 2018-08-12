@@ -1,8 +1,7 @@
-os: windows
 language: csharp
 solution: BlobManagement.sln
 script:
-- dotnet build
-branches:
-except:
-  - gh-pages
+  - msbuild /p:Configuration=Debug BlobManagement.sln
+
+notifications:
+  - email: false
