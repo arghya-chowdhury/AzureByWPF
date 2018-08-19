@@ -1,0 +1,15 @@
+{
+    "name": "quickstartbot",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "",
+            "id": "5d7599b0-a341-11e8-a879-5ba7c14348fc",
+            "type": "endpoint",
+            "appPassword": "",
+            "endpoint": "http://localhost:3984/api/messages",
+            "name": "localhost"
+        }
+    ]
+}
