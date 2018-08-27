@@ -6,7 +6,7 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-<h3>Virtual Network</h3>
+Virtual Network
 ![Network](https://github.com/arghya-chowdhury/AzureSamples/blob/master/ARMVMTemplate/Network.png)
 
 
