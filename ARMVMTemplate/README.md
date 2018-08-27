@@ -4,3 +4,6 @@ Once provisioned you can go to the individual Windows Server VM and install IIS 
 Now if you hit the load balancer public ip, you will notice that load balancer manages the traffic.
 
 <a href="https://azuredeploy.net/" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https://github.com/arghya-chowdhury/AzureSamples/blob/master/ARMVMTemplate/azuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
