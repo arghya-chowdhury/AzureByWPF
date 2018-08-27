@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_QuickTest_name": {
+            "value": null
+        },
+        "virtualMachines_QuickTestVM2_name": {
+            "value": null
+        },
+        "storageAccounts_quickteststorage_name": {
+            "value": null
+        },
+        "loadBalancers_QuickTestLoadBalancer_name": {
+            "value": null
+        },
+        "publicIPAddresses_QuickTestPublicIP_name": {
+            "value": null
+        },
+        "publicIPAddresses_QuickTestVM1PublicIP_name": {
+            "value": null
+        },
+        "publicIPAddresses_QuickTestVM2PublicIP_name": {
+            "value": null
+        },
+        "virtualNetworks_QuickTestVirtualNetwork_name": {
+            "value": null
+        },
+        "availabilitySets_QuickTestAvailabilitySet_name": {
+            "value": null
+        },
+        "networkInterfaces_QuickTestNetworkInterface_name": {
+            "value": null
+        },
+        "publicIPAddresses_QuickTestIPConfigPublicIP_name": {
+            "value": null
+        },
+        "networkInterfaces_QuickTestVM1NetworkInterface_name": {
+            "value": null
+        },
+        "networkInterfaces_QuickTestVM2NetworkInterface_name": {
+            "value": null
+        },
+        "networkSecurityGroups_QuickTestNetworkSecurityGroup_name": {
+            "value": null
+        },
+        "loadBalancers_QuickTestLoadBalancer_id": {
+            "value": null
+        },
+        "loadBalancers_QuickTestLoadBalancer_id_1": {
+            "value": null
+        },
+        "loadBalancers_QuickTestLoadBalancer_id_2": {
+            "value": null
+        },
+        "loadBalancers_QuickTestLoadBalancer_id_3": {
+            "value": null
+        }
+    }
+}
