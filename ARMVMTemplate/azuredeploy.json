@@ -57,25 +57,12 @@
         "networkSecurityGroups_QuickTestNetworkSecurityGroup_name": {
             "defaultValue": "QuickTestNetworkSecurityGroup",
             "type": "String"
-        },
-        "loadBalancers_QuickTestLoadBalancer_id": {
-            "defaultValue": "/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/loadBalancers/QuickTestLoadBalancer/frontendIPConfigurations/LoadBalancerFrontEnd",
-            "type": "String"
-        },
-        "loadBalancers_QuickTestLoadBalancer_id_1": {
-            "defaultValue": "/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/loadBalancers/QuickTestLoadBalancer/backendAddressPools/QuickTestLoadBalancerBackendPool",
-            "type": "String"
-        },
-        "loadBalancers_QuickTestLoadBalancer_id_2": {
-            "defaultValue": "/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/loadBalancers/QuickTestLoadBalancer/probes/QuickTestLoadBalancerHealthProbe",
-            "type": "String"
-        },
-        "loadBalancers_QuickTestLoadBalancer_id_3": {
-            "defaultValue": "/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/loadBalancers/QuickTestLoadBalancer/frontendIPConfigurations/LoadBalancerFrontEnd",
-            "type": "String"
         }
     },
-    "variables": {},
+  "variables": {
+    "loadBalancerName": "QuickTestLoadBalancer",
+    "lbId": "[resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName'))]"
+  },
     "resources": [
         {
             "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Compute/availabilitySets/QuickTestAvailabilitySet'.",
@@ -100,10 +87,7 @@
                     }
                 ]
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_QuickTest_name'))]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_QuickTestVM2_name'))]"
-            ]
+            "dependsOn": []
         },
         {
             "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Compute/virtualMachines/QuickTest'.",
@@ -138,15 +122,16 @@
                     },
                     "dataDisks": []
                 },
-                "osProfile": {
-                    "computerName": "[parameters('virtualMachines_QuickTest_name')]",
-                    "adminUsername": "arghya",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": []
+              "osProfile": {
+                "computerName": "[parameters('virtualMachines_QuickTest_name')]",
+                "adminUsername": "arghya",
+                "adminPassword": "Test@12345678",
+                "windowsConfiguration": {
+                  "provisionVMAgent": true,
+                  "enableAutomaticUpdates": true
                 },
+                "secrets": []
+              },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
@@ -203,15 +188,16 @@
                     },
                     "dataDisks": []
                 },
-                "osProfile": {
-                    "computerName": "[parameters('virtualMachines_QuickTestVM2_name')]",
-                    "adminUsername": "arghya",
-                    "windowsConfiguration": {
-                        "provisionVMAgent": true,
-                        "enableAutomaticUpdates": true
-                    },
-                    "secrets": []
+              "osProfile": {
+                "computerName": "[parameters('virtualMachines_QuickTestVM2_name')]",
+                "adminUsername": "arghya",
+                "adminPassword": "Test@12345678",
+                "windowsConfiguration": {
+                  "provisionVMAgent": true,
+                  "enableAutomaticUpdates": true
                 },
+                "secrets": []
+              },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
@@ -271,21 +257,21 @@
                         "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
                         "properties": {
                             "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_QuickTestLoadBalancer_id')]"
-                            },
+                          "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIPConfigurations/LoadBalancerFrontend')]"
+                          },
                             "frontendPort": 8080,
                             "backendPort": 80,
                             "enableFloatingIP": false,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
                             "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[parameters('loadBalancers_QuickTestLoadBalancer_id_1')]"
-                            },
-                            "probe": {
-                                "id": "[parameters('loadBalancers_QuickTestLoadBalancer_id_2')]"
-                            }
+                          "backendAddressPool": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/QuickTestLoadBalancerBackendPool')]"
+                          },
+                          "probe": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/QuickTestLoadBalancerHealthProbe')]"
+                          }
                         }
                     }
                 ],
@@ -308,9 +294,9 @@
                         "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
                         "properties": {
                             "provisioningState": "Succeeded",
-                            "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_QuickTestLoadBalancer_id_3')]"
-                            },
+                          "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIPConfigurations/LoadBalancerFrontend')]"
+                          },
                             "frontendPort": 8081,
                             "backendPort": 8081,
                             "enableFloatingIP": false,
@@ -739,10 +725,10 @@
                 "publicIPAddressVersion": "IPv4",
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,
-                "dnsSettings": {
-                    "domainNameLabel": "[concat(parameters('publicIPAddresses_QuickTestVM1PublicIP_name'),'quicktestvm1publicip', parameters('publicIPAddresses_QuickTestVM1PublicIP_name'))]",
-                    "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM1PublicIP_name'),'quicktestvm1publicip.eastus.cloudapp.azure.com')]"
-                },
+              "dnsSettings": {
+                "domainNameLabel": "quicktestvm1publicip",
+                "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM1PublicIP_name'),'quicktestvm1publicip.eastus.cloudapp.azure.com')]"
+              },
                 "ipTags": []
             },
             "dependsOn": []
@@ -765,10 +751,10 @@
                 "publicIPAddressVersion": "IPv4",
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,
-                "dnsSettings": {
-                    "domainNameLabel": "[concat(parameters('publicIPAddresses_QuickTestVM2PublicIP_name'),'quicktestvm2publicip', parameters('publicIPAddresses_QuickTestVM2PublicIP_name'))]",
-                    "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM2PublicIP_name'),'quicktestvm2publicip.eastus.cloudapp.azure.com')]"
-                },
+              "dnsSettings": {
+                "domainNameLabel": "quicktestvm2publicip",
+                "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM2PublicIP_name'),'quicktestvm2publicip.eastus.cloudapp.azure.com')]"
+              },
                 "ipTags": []
             },
             "dependsOn": []
