@@ -9,6 +9,6 @@ Now if you hit the load balancer public ip, you will notice that load balancer m
 </a>
 
 Static Visualization
-![Network](https://github.com/arghya-chowdhury/AzureSamples/blob/01.AzureResourceManagerVirtualMachines/ARMVMTemplate/Network.png)
+![Network](https://github.com/arghya-chowdhury/AzureSamples/01.AzureResourceManagerVirtualMachines/ARMVMTemplate/Network.png)
 
 
