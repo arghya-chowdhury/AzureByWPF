@@ -1,0 +1,847 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_QuickTest_name": {
+            "defaultValue": "QuickTest",
+            "type": "String"
+        },
+        "virtualMachines_QuickTestVM2_name": {
+            "defaultValue": "QuickTestVM2",
+            "type": "String"
+        },
+        "storageAccounts_quickteststorage_name": {
+            "defaultValue": "quickteststorage",
+            "type": "String"
+        },
+        "loadBalancers_QuickTestLoadBalancer_name": {
+            "defaultValue": "QuickTestLoadBalancer",
+            "type": "String"
+        },
+        "publicIPAddresses_QuickTestPublicIP_name": {
+            "defaultValue": "QuickTestPublicIP",
+            "type": "String"
+        },
+        "publicIPAddresses_QuickTestVM1PublicIP_name": {
+            "defaultValue": "QuickTestVM1PublicIP",
+            "type": "String"
+        },
+        "publicIPAddresses_QuickTestVM2PublicIP_name": {
+            "defaultValue": "QuickTestVM2PublicIP",
+            "type": "String"
+        },
+        "virtualNetworks_QuickTestVirtualNetwork_name": {
+            "defaultValue": "QuickTestVirtualNetwork",
+            "type": "String"
+        },
+        "availabilitySets_QuickTestAvailabilitySet_name": {
+            "defaultValue": "QuickTestAvailabilitySet",
+            "type": "String"
+        },
+        "networkInterfaces_QuickTestNetworkInterface_name": {
+            "defaultValue": "QuickTestNetworkInterface",
+            "type": "String"
+        },
+        "publicIPAddresses_QuickTestIPConfigPublicIP_name": {
+            "defaultValue": "QuickTestIPConfigPublicIP",
+            "type": "String"
+        },
+        "networkInterfaces_QuickTestVM1NetworkInterface_name": {
+            "defaultValue": "QuickTestVM1NetworkInterface",
+            "type": "String"
+        },
+        "networkInterfaces_QuickTestVM2NetworkInterface_name": {
+            "defaultValue": "QuickTestVM2NetworkInterface",
+            "type": "String"
+        },
+        "networkSecurityGroups_QuickTestNetworkSecurityGroup_name": {
+            "defaultValue": "QuickTestNetworkSecurityGroup",
+            "type": "String"
+        }
+    },
+  "variables": {
+    "loadBalancerName": "QuickTestLoadBalancer",
+    "lbId": "[resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName'))]"
+  },
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Compute/availabilitySets/QuickTestAvailabilitySet'.",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+                "name": "Classic"
+            },
+            "name": "[parameters('availabilitySets_QuickTestAvailabilitySet_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "platformUpdateDomainCount": 2,
+                "platformFaultDomainCount": 2,
+                "virtualMachines": [
+                    {
+                        "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_QuickTest_name'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_QuickTestVM2_name'))]"
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Compute/virtualMachines/QuickTest'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_QuickTest_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_QuickTestAvailabilitySet_name'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[parameters('virtualMachines_QuickTest_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_quickteststorage_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_QuickTest_name'),'20180826154357.vhd'))]"
+                        },
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+              "osProfile": {
+                "computerName": "[parameters('virtualMachines_QuickTest_name')]",
+                "adminUsername": "arghya",
+                "adminPassword": "Test@12345678",
+                "windowsConfiguration": {
+                  "provisionVMAgent": true,
+                  "enableAutomaticUpdates": true
+                },
+                "secrets": []
+              },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_QuickTestVM1NetworkInterface_name'))]",
+                            "properties": {
+                                "primary": true
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', parameters('storageAccounts_quickteststorage_name'), '.blob.core.windows.net', '/')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_QuickTestAvailabilitySet_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_quickteststorage_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_QuickTestVM1NetworkInterface_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Compute/virtualMachines/QuickTestVM2'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_QuickTestVM2_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_QuickTestAvailabilitySet_name'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[parameters('virtualMachines_QuickTestVM2_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_quickteststorage_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_QuickTestVM2_name'),'20180826204629.vhd'))]"
+                        },
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+              "osProfile": {
+                "computerName": "[parameters('virtualMachines_QuickTestVM2_name')]",
+                "adminUsername": "arghya",
+                "adminPassword": "Test@12345678",
+                "windowsConfiguration": {
+                  "provisionVMAgent": true,
+                  "enableAutomaticUpdates": true
+                },
+                "secrets": []
+              },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_QuickTestVM2NetworkInterface_name'))]",
+                            "properties": {
+                                "primary": true
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_QuickTestAvailabilitySet_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_quickteststorage_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_QuickTestVM2NetworkInterface_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/loadBalancers/QuickTestLoadBalancer'.",
+            "type": "Microsoft.Network/loadBalancers",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('loadBalancers_QuickTestLoadBalancer_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "6bd4bb0e-8d58-4628-9e0d-06674d0a8bb1",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestPublicIP_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[concat(parameters('loadBalancers_QuickTestLoadBalancer_name'),'BackendPool')]",
+                        "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
+                        "properties": {
+                            "provisioningState": "Succeeded"
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "QuickTestLoadBalancingRule",
+                        "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                          "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIPConfigurations/LoadBalancerFrontend')]"
+                          },
+                            "frontendPort": 8080,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                          "backendAddressPool": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/backendAddressPools/QuickTestLoadBalancerBackendPool')]"
+                          },
+                          "probe": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/probes/QuickTestLoadBalancerHealthProbe')]"
+                          }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "[concat(parameters('loadBalancers_QuickTestLoadBalancer_name'),'HealthProbe')]",
+                        "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "QuickTestInboundNatRule",
+                        "etag": "W/\"6a5c970c-4790-40c8-aaa7-52eb114aa4fb\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                          "frontendIPConfiguration": {
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('loadBalancerName')), '/frontendIPConfigurations/LoadBalancerFrontend')]"
+                          },
+                            "frontendPort": 8081,
+                            "backendPort": 8081,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp"
+                        }
+                    }
+                ],
+                "inboundNatPools": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestPublicIP_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/networkInterfaces/QuickTestNetworkInterface'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_QuickTestNetworkInterface_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "751fb148-726e-4cb9-9ded-869303ddf5c1",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"06498462-8054-435a-8670-3d59cf45b04a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.1.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name')), '/subnets/QuickTestSubnet')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "0qdk20zg2rfuxf4l3jzl3kixcb.bx.internal.cloudapp.net"
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/networkInterfaces/QuickTestVM1NetworkInterface'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_QuickTestVM1NetworkInterface_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "253217ac-787d-4df8-be66-23bf3c784ce4",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"540ec1b2-7d97-4298-b5ea-5b8fbbde3ca3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.1.0.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestIPConfigPublicIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name')), '/subnets/QuickTestSubnet')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_QuickTestLoadBalancer_name')), '/backendAddressPools/QuickTestLoadBalancerBackendPool')]"
+                                }
+                            ],
+                            "loadBalancerInboundNatRules": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_QuickTestLoadBalancer_name')), '/inboundNatRules/QuickTestInboundNatRule')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "0qdk20zg2rfuxf4l3jzl3kixcb.bx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-4D-6D-C8",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestIPConfigPublicIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_QuickTestLoadBalancer_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/networkInterfaces/QuickTestVM2NetworkInterface'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_QuickTestVM2NetworkInterface_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "7ded9c19-06cf-4b1c-ac0e-bb0af0de3f3d",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"68a68a33-6f9c-4a4b-8486-b3955d2d2d39\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.1.0.6",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestVM2PublicIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name')), '/subnets/QuickTestSubnet')]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_QuickTestLoadBalancer_name')), '/backendAddressPools/QuickTestLoadBalancerBackendPool')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "0qdk20zg2rfuxf4l3jzl3kixcb.bx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-4E-F2-D6",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_QuickTestVM2PublicIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_QuickTestLoadBalancer_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/networkSecurityGroups/QuickTestNetworkSecurityGroup'.",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('networkSecurityGroups_QuickTestNetworkSecurityGroup_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "956e30b5-2aee-49c0-8fda-83ff9d38bb07",
+                "securityRules": [
+                    {
+                        "name": "Port_Public",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8080",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 110,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Port_RDP",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 120,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Port_80",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 115,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"ee43c4bf-ad21-43a6-a2eb-d104de3cc58b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/publicIPAddresses/QuickTestIPConfigPublicIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_QuickTestIPConfigPublicIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "c51a1dca-a860-4d74-8fd9-2dac9bc20fef",
+                "ipAddress": "40.87.80.66",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/publicIPAddresses/QuickTestPublicIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_QuickTestPublicIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "4d34ca01-89db-4961-bba3-48724009e392",
+                "ipAddress": "40.87.80.26",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "quickstart",
+                    "fqdn": "quickstart.eastus.cloudapp.azure.com"
+                },
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/publicIPAddresses/QuickTestVM1PublicIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_QuickTestVM1PublicIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "064b2ad7-2e3b-4f61-9a1a-ad14fafaa55f",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+              "dnsSettings": {
+                "domainNameLabel": "quicktestvm1publicip",
+                "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM1PublicIP_name'),'quicktestvm1publicip.eastus.cloudapp.azure.com')]"
+              },
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/publicIPAddresses/QuickTestVM2PublicIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_QuickTestVM2PublicIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "9f7d664d-622f-4006-af65-84ffe4861099",
+                "ipAddress": "23.96.46.10",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+              "dnsSettings": {
+                "domainNameLabel": "quicktestvm2publicip",
+                "fqdn": "[concat(parameters('publicIPAddresses_QuickTestVM2PublicIP_name'),'quicktestvm2publicip.eastus.cloudapp.azure.com')]"
+              },
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Network/virtualNetworks/QuickTestVirtualNetwork'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_QuickTestVirtualNetwork_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "6bae06d4-e426-4b4b-97cb-ea72bea91711",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.1.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "QuickTestSubnet",
+                        "etag": "W/\"3f318e27-e35d-4514-a17b-a04dd9a58050\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.1.0.0/24",
+                            "serviceEndpoints": [
+                                {
+                                    "provisioningState": "Succeeded",
+                                    "service": "Microsoft.Storage",
+                                    "locations": [
+                                        "eastus",
+                                        "westus"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickTestResouceGroup/providers/Microsoft.Storage/storageAccounts/quickteststorage'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_quickteststorage_name')]",
+            "apiVersion": "2018-03-01-preview",
+            "location": "eastus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name')), '/subnets/QuickTestSubnet')]",
+                            "action": "Allow",
+                            "state": "Succeeded"
+                        }
+                    ],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_QuickTestVirtualNetwork_name'))]"
+            ]
+        }
+    ]
+}
