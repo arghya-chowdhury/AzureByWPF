@@ -1,8 +1,0 @@
-version: 1.0.{build}
-configuration: Release
-platform: Any CPU
-before_build:
-- cmd: nuget restore -source "https://www.nuget.org/api/v2" ./BlobManagement/BlobManagement.sln
-build:
-  project: ./BlobManagement/BlobManagement.sln
-  verbosity: minimal
