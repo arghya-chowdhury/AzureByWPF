@@ -1,0 +1,8 @@
+﻿<Application x:Class="QueueManagement.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="StorageExplorer.xaml">
+    <Application.Resources>
+        <ResourceDictionary Source="./Common/Styles.xaml"/>
+    </Application.Resources>
+</Application>
