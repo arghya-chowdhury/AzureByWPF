@@ -1,4 +1,4 @@
-# Azure Blob Storage [![Build status](https://ci.appveyor.com/api/projects/status/4j403jn6g5vpri2a?svg=true)](https://ci.appveyor.com/project/arghya-chowdhury/azuresamples)
+# Azure Blob Storage [![Build status](https://ci.appveyor.com/api/projects/status/v10ou5ihunbctr3k?svg=true)](https://ci.appveyor.com/project/arghya-chowdhury/azuresamples-smfd5)
 
 The repository contains a Sample Wpf Application which can be manage containers and blobs with a very little configuration change. 
 There are 4 values need to be set before the application starts working.
