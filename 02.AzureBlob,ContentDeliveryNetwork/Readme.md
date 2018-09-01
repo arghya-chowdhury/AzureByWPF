@@ -14,4 +14,4 @@ Both applications uses Azure Content Delivery Network to cache blob object at ne
 Sample app contains all CRUD operations of Blob Management 
 
 ## User Interface
-![Blob Management](https://github.com/arghya-chowdhury/AzureSamples/blob/master//BlobManagement/ClientInterface.png)
+![Blob Management](https://github.com/arghya-chowdhury/AzureSamples/blob/master/02.AzureBlob,ContentDeliveryNetwork/ClientInterface.png)
