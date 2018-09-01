@@ -8,6 +8,6 @@ Now if you hit the load balancer public ip, you will notice that load balancer m
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-![Network](https://github.com/arghya-chowdhury/AzureSamples/blob/master/01.%20AzureResourceManagerVirtualMachines/Network.png)
+![Network](https://github.com/arghya-chowdhury/AzureSamples/blob/master/01.AzureResourceManagerVirtualMachines/Network.png)
 
 
