@@ -2,7 +2,7 @@ version: 1.0.{build}
 configuration: Release
 platform: Any CPU
 before_build:
-- cmd: nuget restore -source "https://www.nuget.org/api/v2" ./BlobManagement/BlobManagement.sln
+- cmd: nuget restore -source "https://www.nuget.org/api/v2" ./WindowsApp/BlobManagement.sln
 build:
-  project: ./Windows App/BlobManagement.sln
+  project: ./WindowsApp/BlobManagement.sln
   verbosity: minimal
