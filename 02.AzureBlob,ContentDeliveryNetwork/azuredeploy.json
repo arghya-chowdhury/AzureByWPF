@@ -1,0 +1,133 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profiles_quickstartstorage_name": {
+            "defaultValue": "quickstartstorage",
+            "type": "String"
+        },
+        "storageAccounts_quickstartstorage_name": {
+            "defaultValue": "quickstartstorage",
+            "type": "String"
+        },
+        "endpoints_quickstartstorage_name": {
+            "defaultValue": "quickstartstorage",
+            "type": "String"
+        },
+        "origins_quickstartstorage_blob_core_windows_net_name": {
+            "defaultValue": "quickstartstorage-blob-core-windows-net",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourcegroups/QuickStart/providers/Microsoft.Cdn/profiles/quickstartstorage'.",
+            "type": "Microsoft.Cdn/profiles",
+            "sku": {
+                "name": "Standard_Verizon"
+            },
+            "name": "[parameters('profiles_quickstartstorage_name')]",
+            "apiVersion": "2016-04-02",
+            "location": "EastUs",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceState": "Active"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourceGroups/QuickStart/providers/Microsoft.Storage/storageAccounts/quickstartstorage'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_quickstartstorage_name')]",
+            "apiVersion": "2018-03-01-preview",
+            "location": "eastus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourcegroups/QuickStart/providers/Microsoft.Cdn/profiles/quickstartstorage/endpoints/quickstartstorage'.",
+            "type": "Microsoft.Cdn/profiles/endpoints",
+            "name": "[concat(parameters('profiles_quickstartstorage_name'), '/', parameters('endpoints_quickstartstorage_name'))]",
+            "apiVersion": "2016-04-02",
+            "location": "EastUs",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "originHostHeader": "[concat(parameters('endpoints_quickstartstorage_name'),'.blob.core.windows.net')]",
+                "isHttpAllowed": true,
+                "isHttpsAllowed": true,
+                "queryStringCachingBehavior": "UseQueryString",
+                "originPath": null,
+                "origins": [
+                    {
+                        "name": "[concat(parameters('endpoints_quickstartstorage_name'),'-blob-core-windows-net')]",
+                        "properties": {
+                            "hostName": "[concat(parameters('endpoints_quickstartstorage_name'),'.blob.core.windows.net')]",
+                            "httpPort": 80,
+                            "httpsPort": 443
+                        }
+                    }
+                ],
+                "contentTypesToCompress": [
+                    "text/plain",
+                    "text/html",
+                    "text/css",
+                    "text/javascript",
+                    "application/x-javascript",
+                    "application/javascript",
+                    "application/json",
+                    "application/xml"
+                ],
+                "isCompressionEnabled": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_quickstartstorage_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/bedbcffa-beb3-40b9-955b-ece692028344/resourcegroups/QuickStart/providers/Microsoft.Cdn/profiles/quickstartstorage/endpoints/quickstartstorage/origins/quickstartstorage-blob-core-windows-net'.",
+            "type": "Microsoft.Cdn/profiles/endpoints/origins",
+            "name": "[concat(parameters('profiles_quickstartstorage_name'), '/', parameters('endpoints_quickstartstorage_name'), '/', parameters('origins_quickstartstorage_blob_core_windows_net_name'))]",
+            "apiVersion": "2016-04-02",
+            "scale": null,
+            "properties": {
+                "hostName": "quickstartstorage.blob.core.windows.net",
+                "httpPort": 80,
+                "httpsPort": 443
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_quickstartstorage_name'))]",
+                "[resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profiles_quickstartstorage_name'), parameters('endpoints_quickstartstorage_name'))]"
+            ]
+        }
+    ]
+}

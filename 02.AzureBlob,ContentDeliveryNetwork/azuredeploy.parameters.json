@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profiles_quickstartstorage_name": {
+            "value": null
+        },
+        "storageAccounts_quickstartstorage_name": {
+            "value": null
+        },
+        "endpoints_quickstartstorage_name": {
+            "value": null
+        },
+        "origins_quickstartstorage_blob_core_windows_net_name": {
+            "value": null
+        }
+    }
+}
